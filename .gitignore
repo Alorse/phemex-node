@@ -1,0 +1,8 @@
+.DS_Store
+.idea
+tmp
+lib
+dist
+node_modules
+yarn.lock
+.env

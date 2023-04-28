@@ -1,0 +1,18 @@
+{
+  "name": "phemex-node",
+  "version": "0.0.1",
+  "description": "* install dependencies",
+  "main": "src/index.js",
+  "scripts": {
+    "start": "node src/index.js"
+  },
+  "repository": "https://github.com/Alorse/phemex-node.git",
+  "keywords": [],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "axios": "0.19.2",
+    "dotenv": "^16.0.3",
+    "websocket": "1.0.31"
+  }
+}
