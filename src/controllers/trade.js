@@ -1,4 +1,5 @@
-module.exports.loadGActiveOrders = async function (symbol) {
+module.exports.loadGActiveOrders = async function (params) {
+    const { symbol } = params;
     const { gLoadActiveOrders } = require('../api/trade');
     const { data, error } = await gLoadActiveOrders(symbol);
     if (data) {

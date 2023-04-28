@@ -1,28 +1,37 @@
 
-const { loadGAccountInfo, loadGActiveOrders } = require('./controllers/account');
 const http = require('http');
 const dotenv = require('dotenv');
+const url = require('url');
+const { ROUTES } = require('./const/route');
 
-const server = http.createServer(async (req, res) => {
-    let data = {
-        msg: 'Not Found'
-    }
-    switch (req.url) {
-        case '/account':
-            data = await loadGAccountInfo('USDT');
-            res.statusCode = 200;
-            break;
-        case '/active-orders':
-            data = await loadGActiveOrders('ETHUSDT');
-            res.statusCode = 200;
-            break;
-        default:
-            res.statusCode = 404;
-            break;
+let data
+const handleRequest = async (req, res) => {
+    const { pathname, query } = url.parse(req.url, true);
+    const route = ROUTES.find(r => r.path === pathname);
+    if (route) {
+        const params = {};
+        for (const param of route.params) {
+            if (query[param]) {
+                params[param] = query[param];
+            } else {
+                res.statusCode = 400; // Bad request
+                data = { msg: `Missing parameter: ${param}` };
+                res.setHeader('Content-Type', 'application/json');
+                res.end(JSON.stringify(data));
+                return;
+            }
+        }
+        data = await route.controller(params);
+        res.statusCode = 200;
+    } else {
+        res.statusCode = 404;
+        data = { msg: 'Not Found' };
     }
     res.setHeader('Content-Type', 'application/json');
     res.end(JSON.stringify(data));
-});
+};
+
+const server = http.createServer(handleRequest);
 
 dotenv.config();
 server.listen(process.env.PORT, () => {

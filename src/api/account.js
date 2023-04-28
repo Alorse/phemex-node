@@ -1,4 +1,4 @@
-const {URLS} = require('../const/url');
+const { URLS } = require('../const/url');
 const http = require('../utils/http');
 
 /**
@@ -6,6 +6,6 @@ const http = require('../utils/http');
  * @param {string} currency - Currency string for the market, e.g. 'USDT'.
  * @returns {Promise<JSON>} - A promise that resolves with the order information as a JSON object.
  */
-module.exports.gAccountPositions = function(currency) {
-    return http.get(URLS.GACCOUNT_POSITIONS, {query: {currency}});
+module.exports.gAccountPositions = function (currency) {
+    return http.get(URLS.GACCOUNT_POSITIONS, { query: { currency } });
 };
