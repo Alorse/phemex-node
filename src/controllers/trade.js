@@ -26,6 +26,27 @@ async function placeOrder() {
         console.log(error);
     }
 }
+
+module.exports.gPlaceOrder = async function (params) {
+    const { symbol, side, posSide, orderQtyRq, ordType, priceRp } = params;
+    const { gPlaceOrder } = require('../api/trade');
+    const info = {
+        symbol: symbol,
+        side: side,
+        posSide: posSide,
+        orderQtyRq: orderQtyRq,
+        ordType: ordType,
+        priceRp: priceRp
+    };
+    const { data, error } = await gPlaceOrder(info);
+    if (data) {
+        return data
+    }
+    if (error) {
+        return error
+    }
+}
+
 async function gPlaceOrder() {
     const { gPlaceOrder } = require('../api/trade');
     const { data, error } = await gPlaceOrder({
