@@ -1,35 +1,71 @@
 
 const http = require('http');
 const dotenv = require('dotenv');
-const url = require('url');
+const uri = require('url');
 const { ROUTES } = require('./const/route');
 
-let data
 const handleRequest = async (req, res) => {
-    const { pathname, query } = url.parse(req.url, true);
-    const route = ROUTES.find(r => r.path === pathname);
+    const { method, url } = req;
+    const { pathname, query } = uri.parse(url, true);
+    const route = ROUTES.find(r => r.path === pathname && r.method === method);
+
     if (route) {
-        const params = {};
-        for (const param of route.params) {
-            if (query[param]) {
-                params[param] = query[param];
-            } else {
-                res.statusCode = 400; // Bad request
-                data = { msg: `Missing parameter: ${param}` };
-                res.setHeader('Content-Type', 'application/json');
-                res.end(JSON.stringify(data));
-                return;
-            }
+        if (method === 'GET') {
+            handleParamsValidation(query, route, res);
+        } else if (method === 'POST') {
+            let body = '';
+            req.on('data', chunk => {
+                body += chunk.toString();
+            });
+
+            req.on('end', async () => {
+                let data;
+                try {
+                    data = JSON.parse(body);
+                } catch (err) {
+                    result = { error: `error: ${err}` };
+                    res.statusCode = 400;
+                    res.setHeader('Content-Type', 'application/json');
+                    res.end(JSON.stringify(result));
+                    return;
+                }
+                handleParamsValidation(data, route, res);
+            });
         }
-        data = await route.controller(params);
-        res.statusCode = 200;
     } else {
         res.statusCode = 404;
-        data = { msg: 'Not Found' };
+        res.setHeader('Content-Type', 'text/plain');
+        res.end('Not found');
     }
-    res.setHeader('Content-Type', 'application/json');
-    res.end(JSON.stringify(data));
 };
+
+function extractParams(input, params) {
+    const result = {};
+    const missing = [];
+    for (const param of params) {
+        if (input[param] !== undefined) {
+            result[param] = input[param];
+        } else {
+            missing.push(param);
+        }
+    }
+    return missing.length ? missing : result;
+}
+
+async function handleParamsValidation(input, route, response) {
+    const params = extractParams(input, route.params);
+    let result
+    if (Array.isArray(params)) {
+        result = { error: `missing parameter(s): ${params.join(', ')}` };
+        response.statusCode = 400;
+    } else {
+        result = await route.controller(params);
+        response.statusCode = 200;
+    }
+    response.setHeader('Content-Type', 'application/json');
+    response.end(JSON.stringify(result));
+}
+
 
 const server = http.createServer(handleRequest);
 

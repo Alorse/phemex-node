@@ -13,7 +13,7 @@ module.exports.URLS = {
   ORDER_PLACE: `/orders`,
   ORDER_CANCEL: `/orders/cancel`,
 
-  //USDT ORDERS
+  // Hedged Contract Rest API
   GACCOUNT_POSITIONS: `/g-accounts/positions`,
   GORDER_ACTIVE_LIST: `/g-orders/activeList`,
   GORDER_PLACE: `/g-orders`,
