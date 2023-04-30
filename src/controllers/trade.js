@@ -1,7 +1,7 @@
 module.exports.loadGActiveOrders = async function (params) {
     const { symbol } = params;
-    const { gLoadActiveOrders } = require('../api/trade');
-    const { data, error } = await gLoadActiveOrders(symbol);
+    const { loadGActiveOrders } = require('../api/trade');
+    const { data, error } = await loadGActiveOrders(symbol);
     if (data) {
         return data
     }
@@ -10,26 +10,9 @@ module.exports.loadGActiveOrders = async function (params) {
     }
 }
 
-async function placeOrder() {
-    const { placeOrder } = require('../api/trade');
-    const { data, error } = await placeOrder({
-        symbol: 'BTCUSD',
-        side: 'Buy',
-        priceEp: 100000000,
-        orderQty: 11,
-        ordType: 'Limit',
-    });
-    if (data) {
-        console.log(data);
-    }
-    if (error) {
-        console.log(error);
-    }
-}
-
-module.exports.gPlaceOrder = async function (params) {
+module.exports.placeGOrder = async function (params) {
     const { symbol, side, posSide, orderQtyRq, ordType, priceRp } = params;
-    const { gPlaceOrder } = require('../api/trade');
+    const { placeGOrder } = require('../api/trade');
     const info = {
         symbol: symbol,
         side: side,
@@ -38,7 +21,7 @@ module.exports.gPlaceOrder = async function (params) {
         ordType: ordType,
         priceRp: priceRp
     };
-    const { data, error } = await gPlaceOrder(info);
+    const { data, error } = await placeGOrder(info);
     if (data) {
         return data
     }
@@ -47,26 +30,9 @@ module.exports.gPlaceOrder = async function (params) {
     }
 }
 
-async function gPlaceOrder() {
-    const { gPlaceOrder } = require('../api/trade');
-    const { data, error } = await gPlaceOrder({
-        symbol: 'ADAUSDT',
-        side: 'Buy',
-        posSide: 'Short',
-        orderQtyRq: '10',
-        ordType: 'Market',
-    });
-    if (data) {
-        console.log(data);
-    }
-    if (error) {
-        console.log(error);
-    }
-}
-
-async function cancelOrder(symbol, orderID) {
-    const { gCancelOrder } = require('../api/trade');
-    const { data, error } = await gCancelOrder(symbol, orderID, 'Long');
+module.exports.cancelGOrder = async function (symbol, orderID) {
+    const { cancelGOrder } = require('../api/trade');
+    const { data, error } = await cancelGOrder(symbol, orderID, 'Long');
     if (data) {
         console.log(data);
     }
