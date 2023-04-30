@@ -1,6 +1,12 @@
 const uri = require('url');
 const { ROUTES } = require('./const/route');
 
+/**
+ * Handles incoming HTTP requests and routes them to the appropriate controller function.
+ *
+ * @param {Object} req - The incoming HTTP request.
+ * @param {Object} res - The response object to send back to the client.
+ */
 module.exports.handleRequest = async (req, res) => {
     const { method, url } = req;
     const { pathname, query } = uri.parse(url, true);
@@ -36,6 +42,14 @@ module.exports.handleRequest = async (req, res) => {
     }
 };
 
+/**
+ * Extracts and validates parameters from the given input object according to the given route parameters.
+ * Returns either an object containing the extracted parameters, or an array of any missing parameters.
+ * 
+ * @param {Object} input - The input object containing the parameters.
+ * @param {Array} params - An array of parameter names that should be extracted and validated.
+ * @returns {Object|Array} - An object containing the extracted parameters or an array of any missing parameters.
+ */
 function extractParams(input, params) {
     const result = {};
     const missing = [];
@@ -49,6 +63,15 @@ function extractParams(input, params) {
     return missing.length ? missing : result;
 }
 
+/**
+ * Validates the given input according to the given route, and calls the appropriate controller function. 
+ * Returns the result of that function as a JSON response.
+ *
+ * @param {Object} input - The input object containing the parameters to be validated.
+ * @param {Object} route - The route object containing information for validation and routing.
+ * @param {Object} response - The HTTP response object to send back to the client.
+ * @returns {Object} - The result of the controller function wrapped in a JSON object.
+ */
 async function handleParamsValidation(input, route, response) {
     const params = extractParams(input, route.params);
     let result
