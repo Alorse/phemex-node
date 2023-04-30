@@ -1,5 +1,5 @@
 const { loadGAccountInfo } = require('../controllers/account');
-const { loadGActiveOrders, placeGOrder } = require('../controllers/trade');
+const { loadGActiveOrders, placeGOrder, cancelGOrder } = require('../controllers/trade');
 
 module.exports.ROUTES = [
     {
@@ -19,5 +19,11 @@ module.exports.ROUTES = [
         method: 'POST',
         controller: placeGOrder,
         params: ['symbol', 'side', 'posSide', 'orderQtyRq', 'ordType', 'priceRp']
+    },
+    {
+        path: '/cancel-order',
+        method: 'DELETE',
+        controller: cancelGOrder,
+        params: ['symbol', 'orderID', 'posSide']
     }
 ];

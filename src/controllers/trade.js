@@ -30,13 +30,14 @@ module.exports.placeGOrder = async function (params) {
     }
 }
 
-module.exports.cancelGOrder = async function (symbol, orderID) {
+module.exports.cancelGOrder = async function (params) {
+    const { symbol, orderID, posSide } = params;
     const { cancelGOrder } = require('../api/trade');
-    const { data, error } = await cancelGOrder(symbol, orderID, 'Long');
+    const { data, error } = await cancelGOrder(symbol, orderID, posSide);
     if (data) {
-        console.log(data);
+        return data
     }
     if (error) {
-        console.log(error);
+        return error
     }
 }

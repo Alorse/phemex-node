@@ -9,7 +9,7 @@ module.exports.handleRequest = async (req, res) => {
     if (route) {
         if (method === 'GET') {
             handleParamsValidation(query, route, res);
-        } else if (method === 'POST') {
+        } else if (method === 'POST' || method === 'DELETE') {
             let body = '';
             req.on('data', chunk => {
                 body += chunk.toString();
