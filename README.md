@@ -21,3 +21,57 @@ npm start
 # Reference
 
 https://github.com/phemex/phemex-api-docs
+
+# Phemex Node API Documentation
+
+## General Information
+- **Name:** Phemex Node
+
+## Endpoints
+
+### Account Info
+**Method:** `GET`  
+**URL:** `{{REQUEST_URL}}/account?currency=USDT`  
+
+#### Query Parameters
+- `currency`: `USDT`
+
+### Active Orders
+**Method:** `GET`  
+**URL:** `{{REQUEST_URL}}/active-orders?symbol=BTCUSDT`  
+
+#### Query Parameters
+- `symbol`: `BTCUSDT`
+
+**Descripción:**  
+They are not open positions, they are Active Limit Orders that are waiting to be opened.
+
+### Place Order
+**Method:** `POST`  
+**URL:** `{{REQUEST_URL}}/place-order`  
+
+#### Request Body
+```json
+{
+  "symbol": "BTCUSDT",
+  "side": "Buy",
+  "posSide": "Long",
+  "orderQtyRq": "0.001",
+  "ordType": "Limit",
+  "priceRp": 64000
+}
+```
+
+### Cancel Order
+**Method:** DELETE
+**URL:** {{REQUEST_URL}}/cancel-order
+
+#### Request Body
+
+```json
+{
+  "symbol": "BTCUSDT",
+  "orderID": "3ea9cbac-af8b-4edb-b482-64b06dcbe586",
+  "posSide": "Long"
+}
+```
