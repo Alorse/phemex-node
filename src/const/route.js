@@ -1,5 +1,6 @@
 const { loadGAccountInfo } = require('../controllers/account');
 const { loadGActiveOrders, placeGOrder, cancelGOrder } = require('../controllers/trade');
+const { loadTrades } = require('../controllers/market');
 
 module.exports.ROUTES = [
     {
@@ -12,6 +13,12 @@ module.exports.ROUTES = [
         path: '/active-orders',
         method: 'GET',
         controller: loadGActiveOrders,
+        params: ['symbol']
+    },
+    {
+        path: '/active-trades',
+        method: 'GET',
+        controller: loadTrades,
         params: ['symbol']
     },
     {

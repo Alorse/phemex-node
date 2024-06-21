@@ -33,13 +33,14 @@ async function loadOrderbook(symbol) {
     }
 }
 
-async function loadTrades(symbol) {
+module.exports.loadTrades = async function (params) {
+    const { symbol } = params;
     const { loadTrades } = require('../api/market');
     const { data, error } = await loadTrades(symbol);
     if (data) {
-        console.log(data);
+        return data
     }
     if (error) {
-        console.log(error);
+        return error
     }
 }
